@@ -18,7 +18,7 @@ class Api::V1::MembersController < ApplicationController
     @member = Member.new(member_params)
 
     if @member.save
-      render json: @member, status: :created, location: @member
+      render json: @member, status: :created
     else
       render json: @member.errors, status: :unprocessable_entity
     end
@@ -36,6 +36,11 @@ class Api::V1::MembersController < ApplicationController
   # DELETE /members/1
   def destroy
     @member.destroy
+    msg = {
+      status: 200,
+      msg: "Deleted Successfully"
+    }
+    render json: msg
   end
 
   private
@@ -46,6 +51,6 @@ class Api::V1::MembersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def member_params
-      params.fetch(:member, {})
+      params.permit(:nama, :nim, :jurusan)
     end
 end
